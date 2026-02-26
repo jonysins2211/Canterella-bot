@@ -128,11 +128,13 @@ def is_vps_ip(ip_str: str) -> bool:
     """Check if an IP belongs to a known VPS/datacenter."""
     try:
         ip = ipaddress.ip_address(ip_str)
+        if ip.version == 6:
+            return False
         for network in _vps_networks:
             if ip in network:
                 return True
         return False
-    except ValueError:
+    except Exception:
         return False
 
 
@@ -158,7 +160,10 @@ def get_client_ip(request) -> str:
     # Check common proxy headers
     forwarded = request.headers.get("X-Forwarded-For", "")
     if forwarded:
-        return forwarded.split(",")[0].strip()
+        ips = [ip.strip() for ip in forwarded.split(",") if ip.strip()]
+        if ips:
+            # Use the last IP in X-Forwarded-For to prevent spoofing
+            return ips[-1]
     real_ip = request.headers.get("X-Real-IP", "")
     if real_ip:
         return real_ip.strip()
@@ -571,15 +576,8 @@ async def verify_fingerprint(request):
         screen = fingerprint.get("screen", "0x0")
         if screen == "0x0":
             bot_detected = True
-        
-        if fingerprint.get("plugins", 0) == 0 and not fingerprint.get("chrome", False):
-            bot_detected = True
-        
-        canvas = fingerprint.get("canvas", "")
-        if canvas == "error" or len(canvas) < 10:
-            bot_detected = True
 
-        if score < 3:
+        if score < 2:
             bot_detected = True
 
         if bot_detected:
@@ -732,3 +730,4 @@ def _link_expired_page():
     </div></body></html>
     """
     return web.Response(text=html, content_type='text/html', status=410)
+
