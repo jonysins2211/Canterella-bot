@@ -23,12 +23,12 @@ APP_ID = int(os.environ.get("APP_ID", "29961422")) #Your API ID from my.telegram
 API_HASH = os.environ.get("API_HASH", "cba915c79809dc0806676db7052b2a83") #Your API Hash from my.telegram.org
 #--------------------------------------------
 
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002170811388")) #Your db channel Id
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002087146692")) #Your db channel Id
 OWNER = os.environ.get("OWNER", "hawkeyee616") # Owner username without @
 OWNER_ID = int(os.environ.get("OWNER_ID", "949657126")) # Owner id
 #--------------------------------------------
 PORT = os.environ.get("PORT", "8001")
-BASE_URL = os.environ.get("BASE_URL", "")  # e.g. https://your-domain.com
+BASE_URL = os.environ.get("BASE_URL", "https://frantic-marijo-wickson-2faa9b4a.koyeb.app/")  # e.g. https://your-domain.com
 #--------------------------------------------
 DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://avatarr112200:6pnK1K3d1Gg9CaIW@cluster0.nmglsmd.mongodb.net/?appName=Cluster0")
 DB_NAME = os.environ.get("DATABASE_NAME", "avatar11220")
